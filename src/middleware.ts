@@ -11,9 +11,9 @@ export function middleware(request: NextRequest) {
   );
 
   // Redirect to /login if user is not authenticated and path is not public
-  if (!token && !isPublicPath) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
+  // if (!token && !isPublicPath) {
+  //   return NextResponse.redirect(new URL('/login', request.url));
+  // }
 
   // If authenticated or on public path, allow the request
   return NextResponse.next();

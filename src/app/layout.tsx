@@ -4,6 +4,12 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from 'sonner';
 
+import { AppSidebar } from '@/components/layouts/app-sidebar';
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
 import TanstackProvider from '@/providers/tanstack-provider';
 
 const geistSans = Geist({
@@ -32,8 +38,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TanstackProvider>
-          {children}
-          <Toaster position="top-center" richColors />
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              <main>
+                <SidebarTrigger />
+                {children}
+                <Toaster position="top-center" richColors />
+              </main>
+            </SidebarInset>
+          </SidebarProvider>
         </TanstackProvider>
       </body>
     </html>
