@@ -1,7 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { LoginPayload } from '@/lib/types/auth-types';
-import { login } from '@/server/auth/login';
+import {
+  ForgotPayload,
+  LoginPayload,
+  ResetPayload,
+} from '@/lib/types/auth-types';
+import { forgotPassword, login, resetPassword } from '@/server/auth/login';
 
 export const useLogin = () => {
   return useMutation({
@@ -11,6 +15,30 @@ export const useLogin = () => {
     },
     onError: error => {
       console.error('Login failed:', error);
+    },
+  });
+};
+
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: (payload: ForgotPayload) => forgotPassword(payload),
+    onSuccess: () => {
+      console.log('Password reset email sent');
+    },
+    onError: error => {
+      console.error('Error sending password reset email:', error);
+    },
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: (payload: ResetPayload) => resetPassword(payload),
+    onSuccess: () => {
+      console.log('Password reset successfully');
+    },
+    onError: error => {
+      console.error('Error resetting password:', error);
     },
   });
 };

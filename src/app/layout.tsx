@@ -38,16 +38,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TanstackProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <main>
-                <SidebarTrigger />
-                {children}
-                <Toaster position="top-center" richColors />
-              </main>
-            </SidebarInset>
-          </SidebarProvider>
+          {children}
+          <Toaster position="top-center" richColors />
         </TanstackProvider>
       </body>
     </html>

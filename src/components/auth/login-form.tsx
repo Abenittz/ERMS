@@ -1,7 +1,9 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -26,7 +28,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLogin } from '@/hooks/auth-hooks/use-auth';
 import { cn } from '@/lib/utils';
-import { LoginInputs } from '@/lib/validation/auth';
+import { LoginInputs, loginSchema } from '@/lib/validation/auth';
 
 export function LoginForm({
   className,
@@ -35,18 +37,24 @@ export function LoginForm({
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginInputs>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
+  const router = useRouter();
+
   const { mutate, isPending } = useLogin();
 
   const onSubmit = async (data: LoginInputs) => {
+    console.log('Login data', data);
     mutate(data, {
-      onSuccess: () => {
+      onSuccess: response => {
+        console.log('Login success', response);
         toast.success('Login successFully');
+        router.push('/');
       },
       onError: () => {
         toast.error('Login failed');

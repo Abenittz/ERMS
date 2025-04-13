@@ -1,40 +1,39 @@
-'use server';
-
-import axios from 'axios';
-import { cookies } from 'next/headers';
-
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-const cookieStore = cookies();
-const cookie = await cookieStore;
-const token = cookie.get('accessToken')?.value;
-
+import axios, { InternalAxiosRequestConfig } from 'axios'; // eslint-disable-line import/named
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  headers: isDevelopment
-    ? { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-    : {},
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-apiClient.interceptors.request.use(
-  config => {
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  },
-);
+console.log(process.env.NEXT_PUBLIC_BASE_URL);
 
-apiClient.interceptors.response.use(
-  response => {
-    return response;
-  },
-  error => {
-    if (error.response && error.response.status === 401) {
-      console.error('Unauthorized! Please check your credentials.');
-    }
-    return Promise.reject(error);
-  },
-);
+apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const getCookie = (name: string): string | undefined => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() ?? undefined;
+    return undefined;
+  };
+
+  const token = getCookie('accessToken');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default apiClient;
+
+export const setCookie = (name: string, value: string) => {
+  const cookieOptions = [
+    `${name}=${value}`,
+    'path=/',
+    'secure',
+    'max-age=86400',
+    'samesite=lax',
+  ].join('; ');
+
+  console.log('Setting cookie with options:', cookieOptions);
+  document.cookie = cookieOptions; // eslint-disable-line unicorn/no-document-cookie
+};
