@@ -15,3 +15,16 @@ export interface changePasswordPayload {
   oldPassword: string;
   newPassword: string;
 }
+
+export interface UserFormData {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  phone?: string;
+  profession?: string;
+  password: string;
+  roleId: number;
+}

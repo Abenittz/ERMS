@@ -4,8 +4,14 @@ import {
   ForgotPayload,
   LoginPayload,
   ResetPayload,
+  UserFormData,
 } from '@/lib/types/auth-types';
-import { forgotPassword, login, resetPassword } from '@/server/auth/login';
+import {
+  forgotPassword,
+  login,
+  registration,
+  resetPassword,
+} from '@/server/auth/login';
 
 export const useLogin = () => {
   return useMutation({
@@ -15,6 +21,18 @@ export const useLogin = () => {
     },
     onError: error => {
       console.error('Login failed:', error);
+    },
+  });
+};
+
+export const useRegistration = () => {
+  return useMutation({
+    mutationFn: (payload: UserFormData) => registration(payload),
+    onSuccess: data => {
+      console.log('Registration successfully:', data);
+    },
+    onError: error => {
+      console.error('Registration failed:', error);
     },
   });
 };

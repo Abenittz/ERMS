@@ -54,18 +54,18 @@ const data = {
   ],
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
+      title: 'Dashboard',
+      url: '/admin',
       icon: SquareTerminal,
       isActive: true,
     },
     {
-      title: 'Models',
-      url: '#',
+      title: 'Requests',
+      url: '/admin/requests',
       icon: Bot,
     },
     {
-      title: 'Documentation',
+      title: 'Technicians',
       url: '#',
       icon: BookOpen,
     },

@@ -5,6 +5,7 @@ import {
   ForgotPayload,
   LoginPayload,
   ResetPayload,
+  UserFormData,
 } from '@/lib/types/auth-types';
 
 import apiClient, { setCookie } from '../fetcher';
@@ -17,6 +18,20 @@ export const login = async (payload: LoginPayload) => {
       setCookie('accessToken', response.data.token);
     }
 
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.error('Error response:', error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    throw error;
+  }
+};
+
+export const registration = async (payload: UserFormData) => {
+  try {
+    const response = await apiClient.post('/auth/register', payload);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {

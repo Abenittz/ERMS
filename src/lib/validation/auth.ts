@@ -68,3 +68,18 @@ export const changePassword = z.object({
 });
 
 export type ChangePasswordInputs = z.infer<typeof changePassword>;
+
+export const userSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  middleName: z.string().min(1, 'Middle name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  gender: z.string().min(1, 'Gender is required'),
+  dateOfBirth: z.string().min(1, 'Gender is required'),
+  email: z.string().email('Must be a valid email address'),
+  phone: z.string().optional(),
+  profession: z.string().optional(),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+  roleId: z.coerce.number(),
+});
+
+export type UserFormData = z.infer<typeof userSchema>;
