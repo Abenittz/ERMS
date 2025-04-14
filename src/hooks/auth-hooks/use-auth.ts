@@ -11,7 +11,7 @@ import {
   login,
   registration,
   resetPassword,
-} from '@/server/auth/login';
+} from '@/server/auth/requests';
 
 export const useLogin = () => {
   return useMutation({

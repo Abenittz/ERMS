@@ -1,4 +1,5 @@
-import { Plus } from 'lucide-react';
+'use client';
+import { Plus, X } from 'lucide-react';
 import Image from 'next/image';
 
 import Mattu from '@/../public/logo/mettuLogo.png';
@@ -22,8 +23,15 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import RequestForm from '@/components/user/request-form';
+import { useState } from 'react';
 
 export default function Page() {
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+
+  const toggleRequestForm = () => {
+    setIsRequestFormOpen(prev => !prev);
+  };
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -60,16 +68,27 @@ export default function Page() {
                   </p>
                 </div>
               </div>
+
+              {/* Clickable Request Box */}
               <div>
-                <div className="flex h-[50px] w-[650px] items-center justify-between rounded-lg bg-white p-2">
+                <div
+                  className="flex h-[50px] w-[650px] cursor-pointer items-center justify-between rounded-lg bg-white p-2"
+                  onClick={toggleRequestForm}
+                >
                   <h1 className="text-primary px-2">
                     Do you have any repairement request
                   </h1>
                   <div className="bg-accent flex h-full w-10 items-center justify-center rounded-md">
-                    <Plus className="text-primary" />
+                    {isRequestFormOpen ? (
+                      <X className="text-primary" />
+                    ) : (
+                      <Plus className="text-primary" />
+                    )}
                   </div>
                 </div>
-                {/* <RequestForm /> */}
+
+                {/* Show/Hide RequestForm */}
+                {isRequestFormOpen && <RequestForm />}
               </div>
 
               {/* history  */}

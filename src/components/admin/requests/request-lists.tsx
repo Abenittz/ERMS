@@ -1,7 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function RequestList() {
   return (
@@ -15,13 +16,13 @@ export default function RequestList() {
                 Available Technicians
               </span>
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => (
-                  <Avatar key={i} className="h-8 w-8 border-2 border-white">
+                {[1, 2, 3, 4].map(index => (
+                  <Avatar key={index} className="h-8 w-8 border-2 border-white">
                     <AvatarImage
                       src="https://github.com/shadcn.png"
-                      alt={`Technician ${i}`}
+                      alt={`Technician ${index}`}
                     />
-                    <AvatarFallback>T{i}</AvatarFallback>
+                    <AvatarFallback>T{index}</AvatarFallback>
                   </Avatar>
                 ))}
               </div>
@@ -29,8 +30,11 @@ export default function RequestList() {
           </div>
         </div>
 
-        {[1, 2, 3, 4, 5, 6].map(i => (
-          <Card key={i} className="overflow-hidden border border-gray-100 p-2">
+        {[1, 2, 3, 4, 5, 6].map(index => (
+          <Card
+            key={index}
+            className="overflow-hidden border border-gray-100 p-2"
+          >
             <CardContent className="p-0">
               <div className="flex items-center justify-between p-4">
                 <div className="flex items-start gap-3">

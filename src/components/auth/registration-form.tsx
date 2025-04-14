@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -26,9 +27,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLogin, useRegistration } from '@/hooks/auth-hooks/use-auth';
 import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { UserFormData, userSchema } from '@/lib/validation/auth';
-import { Eye, EyeOff } from 'lucide-react';
 
 export function RegistrationForm({
   className,

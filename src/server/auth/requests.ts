@@ -3,6 +3,7 @@ import { isAxiosError } from 'axios';
 import {
   changePasswordPayload,
   ForgotPayload,
+  InvitationPayload,
   LoginPayload,
   ResetPayload,
   UserFormData,
@@ -32,6 +33,20 @@ export const login = async (payload: LoginPayload) => {
 export const registration = async (payload: UserFormData) => {
   try {
     const response = await apiClient.post('/auth/register', payload);
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.error('Error response:', error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    throw error;
+  }
+};
+
+export const invitation = async (payload: InvitationPayload) => {
+  try {
+    const response = await apiClient.post('/registration/invite', payload);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {

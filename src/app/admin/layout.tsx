@@ -1,7 +1,8 @@
+import { Toaster } from 'sonner';
+
 import { AppSidebar } from '@/components/layouts/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import TanstackProvider from '@/providers/tanstack-provider';
-import { Toaster } from 'sonner';
 
 export default function RootLayout({
   children,

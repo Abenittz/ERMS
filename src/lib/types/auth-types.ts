@@ -16,6 +16,10 @@ export interface changePasswordPayload {
   newPassword: string;
 }
 
+export interface InvitationPayload {
+  email: string;
+}
+
 export interface UserFormData {
   firstName: string;
   middleName: string;

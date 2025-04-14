@@ -1,5 +1,8 @@
+import { Plus } from 'lucide-react';
 import React from 'react';
 
+import { UserTable } from '@/components/admin/table-user';
+import { AppSidebar } from '@/components/layouts/app-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,16 +11,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/layouts/app-sidebar';
-import { UserTable } from '@/components/admin/table-user';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 
 export default function Page() {
   return (

@@ -1,6 +1,18 @@
 'use client';
 
+import { ChevronRight, Search } from 'lucide-react';
 import { useState } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -9,17 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ChevronRight, Search } from 'lucide-react';
 
 // Define the User type
 type User = {
@@ -148,7 +149,7 @@ export function UserTable() {
             type="text"
             placeholder="Search"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={event_ => setSearchQuery(event_.target.value)}
             className="w-full bg-white py-2 pr-4 pl-10 sm:w-[250px]"
           />
         </div>

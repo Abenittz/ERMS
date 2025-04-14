@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+
 import MettuLogo from '@/../public/logo/mettuLogo.png';
 import { RegistrationForm } from '@/components/auth/registration-form';
 
@@ -17,7 +18,6 @@ export default function Page() {
           </div>
           Mattu University ERMS
         </Link>
-        {/* <LoginForm /> */}
         <RegistrationForm />
       </div>
     </div>

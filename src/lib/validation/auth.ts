@@ -83,3 +83,8 @@ export const userSchema = z.object({
 });
 
 export type UserFormData = z.infer<typeof userSchema>;
+
+export const invitationSchema = z.object({
+  email: z.string().email('Must be a valid email address'),
+});
+export type InvitationInputs = z.infer<typeof invitationSchema>;
