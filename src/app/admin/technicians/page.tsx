@@ -50,8 +50,7 @@ export default function Page() {
           </Button>
         </div>
         <div className="mt-">
-          {/* <UserTable /> */}
-          Admin dashboard
+          <UserTable />
         </div>
       </div>
     </div>

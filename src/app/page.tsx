@@ -1,6 +1,7 @@
 'use client';
 import { Plus, X } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 import Mattu from '@/../public/logo/mettuLogo.png';
 import { AppSidebar } from '@/components/layouts/app-sidebar';
@@ -23,13 +24,12 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import RequestForm from '@/components/user/request-form';
-import { useState } from 'react';
 
 export default function Page() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
 
   const toggleRequestForm = () => {
-    setIsRequestFormOpen(prev => !prev);
+    setIsRequestFormOpen(previous => !previous);
   };
 
   return (
