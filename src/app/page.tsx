@@ -24,6 +24,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import RequestForm from '@/components/user/request-form';
+import { useUserStore } from '@/store/userStore';
 
 export default function Page() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
@@ -31,6 +32,10 @@ export default function Page() {
   const toggleRequestForm = () => {
     setIsRequestFormOpen(previous => !previous);
   };
+
+  const currentUser = useUserStore(state => state.user);
+
+  console.log('User data:', currentUser);
 
   return (
     <SidebarProvider>
@@ -69,6 +74,7 @@ export default function Page() {
                 </div>
               </div>
 
+              <h1>Hello {currentUser?.firstName}</h1>
               {/* Clickable Request Box */}
               <div>
                 <div

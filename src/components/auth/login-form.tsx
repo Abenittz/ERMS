@@ -29,6 +29,7 @@ import { Label } from '@/components/ui/label';
 import { useLogin } from '@/hooks/auth-hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { LoginInputs, loginSchema } from '@/lib/validation/auth';
+import { useUserStore } from '@/store/userStore';
 
 export function LoginForm({
   className,

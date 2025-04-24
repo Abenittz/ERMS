@@ -1,10 +1,16 @@
+'use client';
+
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
+import { useGetRepairRequests } from '@/hooks/repair/use-repair';
 
 export default function RequestList() {
+  const { data, isLoading, error } = useGetRepairRequests();
+
+  console.log('Repair requests:', data);
   return (
     <>
       {/* Left Column - Requests List */}

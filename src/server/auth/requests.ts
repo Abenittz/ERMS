@@ -10,6 +10,7 @@ import {
 } from '@/lib/types/auth-types';
 
 import apiClient, { setCookie } from '../fetcher';
+import { useUserStore } from '@/store/userStore';
 
 export const login = async (payload: LoginPayload) => {
   try {
@@ -19,6 +20,8 @@ export const login = async (payload: LoginPayload) => {
       setCookie('accessToken', response.data.token);
     }
 
+    const { token, userWithoutPassword } = response.data;
+    useUserStore.getState().setUser(userWithoutPassword, token);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {

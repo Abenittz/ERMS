@@ -1,7 +1,7 @@
 import React from 'react';
 
-import RequestDetail from '@/components/admin/requests/request-detail';
-import RequestList from '@/components/admin/requests/request-lists';
+import RequestDetail from '@/components/admin/requests/prev-detail';
+import RequestList from '@/components/admin/requests/prev-list';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -13,11 +13,19 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
+import { RepairRequestDashboard } from '@/components/admin/requests/repair-request-dashboard';
+import { useGetRepairRequests } from '@/hooks/repair/use-repair';
+import { getRepairRequests } from '@/server/repairement/repair-request';
+import { getRepairRequestSS } from '@/server/repairement/get-repairement-ss';
 
-export default function Page() {
+export default async function Page() {
+  // const repairRequests = await getRepairRequestSS();
+  // const data = repairRequests?.repairRequests;
+
+  // console.log('Repair requests:', repairRequests);
   return (
     <div className="flex flex-row">
-      <div className="container mt-10 ml-10 flex w-10/12 flex-col gap-2">
+      <div className="container mx-auto mt-10 flex w-full flex-col gap-2">
         <header className="flex h-10 shrink-0 flex-col items-start gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <Breadcrumb>
@@ -40,7 +48,9 @@ export default function Page() {
             </h1>
           </div>
         </header>
-        <div className="flex w-full flex-1 flex-col gap-4 p-4 pt-0 md:flex-row">
+
+        <RepairRequestDashboard />
+        {/* <div className="flex w-full flex-1 flex-col gap-4 p-4 pt-0 md:flex-row">
           <div className="w-full">
             <div className="flex min-h-screen w-full">
               <div className="mt-20 w-full p-4 pl-0">
@@ -51,10 +61,10 @@ export default function Page() {
             </div>
           </div>
 
-          {/* dsd  */}
-        </div>
+      
+        </div> */}
       </div>
-      <RequestDetail />
+      {/* <RepairRequestDashboard /> */}
     </div>
   );
 }
