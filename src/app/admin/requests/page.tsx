@@ -1,7 +1,6 @@
 import React from 'react';
 
-import RequestDetail from '@/components/admin/requests/prev-detail';
-import RequestList from '@/components/admin/requests/prev-list';
+import { RepairRequestDashboard } from '@/components/admin/requests/repair-request-dashboard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -13,10 +12,9 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
-import { RepairRequestDashboard } from '@/components/admin/requests/repair-request-dashboard';
 import { useGetRepairRequests } from '@/hooks/repair/use-repair';
-import { getRepairRequests } from '@/server/repairement/repair-request';
 import { getRepairRequestSS } from '@/server/repairement/get-repairement-ss';
+import { getRepairRequests } from '@/server/repairement/repair-request';
 
 export default async function Page() {
   // const repairRequests = await getRepairRequestSS();

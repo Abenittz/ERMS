@@ -1,9 +1,10 @@
 'use client';
+import { ChevronDown } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Technician {
   id: string;
@@ -129,7 +130,7 @@ export function RequestDetail({
                     alt={request.technician.name}
                   />
                   <AvatarFallback>
-                    {request.technician.name.substring(0, 2)}
+                    {request.technician.name.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{request.technician.name}</span>
@@ -162,9 +163,7 @@ export function RequestDetail({
                         src={tech.avatar || '/placeholder.svg'}
                         alt={tech.name}
                       />
-                      <AvatarFallback>
-                        {tech.name.substring(0, 2)}
-                      </AvatarFallback>
+                      <AvatarFallback>{tech.name.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <span>{tech.name}</span>
                   </div>

@@ -46,7 +46,7 @@ export function TechnicianSelector({
                       src={tech.avatar || '/placeholder.svg'}
                       alt={tech.name}
                     />
-                    <AvatarFallback>{tech.name.substring(0, 2)}</AvatarFallback>
+                    <AvatarFallback>{tech.name.slice(0, 2)}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="font-medium">{tech.name}</div>

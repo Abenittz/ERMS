@@ -24,7 +24,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import RequestForm from '@/components/user/request-form';
-import { useUserStore } from '@/store/userStore';
+import { useUserStore } from '@/store/user-store';
 
 export default function Page() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);

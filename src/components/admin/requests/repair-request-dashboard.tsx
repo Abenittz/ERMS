@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+/* eslint-disable unicorn/no-null */
 import { Home } from 'lucide-react';
+import { useState } from 'react';
 
-import { RequestList } from './request-list';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { RepairRequestResponse } from '@/lib/types/repairement';
+
 import { RequestDetail } from './request-details';
+import { RequestList } from './request-list';
 
 // Sample data based on the provided JSON structure
 const sampleRequests = [
@@ -151,7 +153,7 @@ const technicians = [
 ];
 
 export function RepairRequestDashboard() {
-  const [selectedRequestId, setSelectedRequestId] = useState<number>(
+  const [selectedRequestId, setSelectedRequestId] = useState<number | null>(
     sampleRequests[0].id,
   );
   const [requests, setRequests] = useState(sampleRequests);
@@ -162,8 +164,8 @@ export function RepairRequestDashboard() {
   const handleAssignTechnician = (requestId: number, technicianId: string) => {
     const technician = technicians.find(tech => tech.id === technicianId);
 
-    setRequests(prevRequests =>
-      prevRequests.map(request =>
+    setRequests(previousRequests =>
+      previousRequests.map(request =>
         request.id === requestId
           ? {
               ...request,
@@ -200,7 +202,7 @@ export function RepairRequestDashboard() {
                       src={tech.avatar || '/placeholder.svg'}
                       alt={tech.name}
                     />
-                    <AvatarFallback>{tech.name.substring(0, 2)}</AvatarFallback>
+                    <AvatarFallback>{tech.name.slice(0, 2)}</AvatarFallback>
                   </Avatar>
                 </div>
               ))}
@@ -212,7 +214,7 @@ export function RepairRequestDashboard() {
 
           <RequestList
             requests={requests}
-            selectedRequestId={selectedRequestId}
+            selectedRequestId={selectedRequestId ?? sampleRequests[0].id}
             onSelectRequest={id => setSelectedRequestId(id)}
           />
         </div>

@@ -1,5 +1,5 @@
-import { cookies } from 'next/headers';
 import axios, { isAxiosError } from 'axios';
+import { cookies } from 'next/headers';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 

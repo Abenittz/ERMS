@@ -6,7 +6,7 @@ interface Role {
   name: string;
 }
 
-interface User {
+export interface UserProfile {
   id: number;
   firstName: string;
   middleName: string;
@@ -24,18 +24,18 @@ interface User {
 }
 
 interface UserStore {
-  user: User | null;
-  token: string | null;
-  setUser: (user: User, token: string) => void;
+  user: UserProfile | undefined;
+  token: string | undefined;
+  setUser: (user: UserProfile, token: string) => void;
   clearUser: () => void;
 }
 export const useUserStore = create<UserStore>()(
   persist(
     (set): UserStore => ({
-      user: null,
-      token: null,
+      user: undefined,
+      token: undefined,
       setUser: (user, token) => set({ user, token }),
-      clearUser: () => set({ user: null, token: null }),
+      clearUser: () => set({ user: undefined, token: undefined }),
     }),
     {
       name: 'user-store',

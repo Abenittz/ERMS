@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MessageSquare } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import {
   Card,
@@ -28,15 +29,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useRepairRequest } from '@/hooks/repair/use-repair';
 import { requestFormSchema, RequestInputs } from '@/lib/validation/request';
+import { useUserStore } from '@/store/user-store';
 
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { Textarea } from '../ui/textarea';
-import { useUserStore } from '@/store/userStore';
-import { useRepairRequest } from '@/hooks/repair/use-repair';
-import { toast } from 'sonner';
 
 export default function RequestForm() {
   const { user } = useUserStore();
@@ -83,12 +83,12 @@ export default function RequestForm() {
 
   useEffect(() => {
     const date = new Date();
-    const generatedReqNumber = `REQ-${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${Math.floor(
+    const generatedRequestNumber = `REQ-${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${Math.floor(
       Math.random() * 1000,
     )
       .toString()
       .padStart(3, '0')}`;
-    form.setValue('requestNumber', generatedReqNumber);
+    form.setValue('requestNumber', generatedRequestNumber);
   }, [form]);
 
   return (

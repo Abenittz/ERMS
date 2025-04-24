@@ -8,9 +8,9 @@ import {
   ResetPayload,
   UserFormData,
 } from '@/lib/types/auth-types';
+import { useUserStore } from '@/store/user-store';
 
 import apiClient, { setCookie } from '../fetcher';
-import { useUserStore } from '@/store/userStore';
 
 export const login = async (payload: LoginPayload) => {
   try {

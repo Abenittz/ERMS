@@ -1,8 +1,9 @@
 'use client';
 
 import { ChevronRight, Clock } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 import { RepairRequestResponse } from '@/lib/types/repairement';
+import { cn } from '@/lib/utils';
 
 interface Request {
   id: string;
