@@ -13,6 +13,7 @@
     "unicorn/no-array-callback-reference": "off",
     "unicorn/no-array-for-each": "off",
     "unicorn/no-array-reduce": "off",
+    "unicorn/no-null": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/no-abusive-eslint-disable": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
@@ -20,7 +21,8 @@
       "error",
       {
         "allowList": {
-          "e2e": true
+          "e": true,
+          "e2e": false
         },
         "replacements": {
           "props": false,
