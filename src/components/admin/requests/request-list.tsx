@@ -15,7 +15,7 @@ interface Request {
 
 interface RequestListProps {
   requests: RepairRequestResponse[];
-  selectedRequestId: number;
+  selectedRequestId: number | null;
   onSelectRequest: (id: number) => void;
 }
 

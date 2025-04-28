@@ -1,5 +1,5 @@
 'use client';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Loader2 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -14,15 +14,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { UserProfile } from '@/store/user-store';
 
-interface Technician {
-  id: string;
-  name: string;
-  avatar: string;
-  department: string;
-  available: boolean;
-}
-
+import { RepairRequestInterface, Technician } from './repair-request-dashboard';
 interface Request {
   id: number;
   requestNumber: string;
@@ -41,25 +35,32 @@ interface Request {
   deletedAt: null | string;
   status: string;
   time: string;
-  technician: {
-    id: string;
-    name: string;
-    avatar: string;
-  } | null;
+  // Remove the technician field from here
 }
 
+export interface Assignment {
+  id: number;
+  repairRequestId: number;
+  technicianId: number;
+  assignedById: number;
+  assignedAt: string;
+  RepairRequest: RepairRequestInterface;
+  technician: Technician;
+}
 interface RequestDetailProps {
-  request: Request;
-  technicians: Technician[];
-  onAssignTechnician: (requestId: number, technicianId: string) => void;
+  request: RepairRequestInterface;
+  assignment: Assignment | null;
+  technicians: UserProfile[];
+  onAssignTechnician: (requestId: number, technicianId: number) => void;
+  isLoading?: number | null;
 }
-
 export function RequestDetail({
   request,
+  assignment,
   technicians,
   onAssignTechnician,
-}: RequestDetailProps) {
-  // Format the date from ISO string
+  isLoading,
+}: Readonly<RequestDetailProps>) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString('en-US', {
@@ -70,6 +71,22 @@ export function RequestDetail({
       minute: '2-digit',
     });
   };
+
+  console.log('Request assignment:', assignment);
+
+  // Helper to get technician details from assignment
+  const getAssignedTechnician = () => {
+    if (!assignment) return null;
+
+    // Check both possible structures from API response
+    if (assignment.technician) {
+      return assignment.technician;
+    }
+
+    return null;
+  };
+
+  const assignedTechnician = getAssignedTechnician();
 
   return (
     <div className="flex h-full flex-col">
@@ -82,7 +99,7 @@ export function RequestDetail({
             <div className="mt-2 flex items-center gap-4">
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-sm">Time</span>
-                <span className="font-medium">{request.time}</span>
+                <span className="font-medium">{request.requestDate}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-muted-foreground text-sm">
@@ -105,35 +122,29 @@ export function RequestDetail({
             >
               {request.priority} Priority
             </Badge>
-            <Badge
-              variant={
-                request.status === 'Pending'
-                  ? 'outline'
-                  : request.status === 'In Progress'
-                    ? 'secondary'
-                    : 'default'
-              }
-            >
-              {request.status}
-            </Badge>
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="text-muted-foreground text-sm">Technician</span>
-            {request.technician ? (
+            {assignedTechnician ? (
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
-                    src={request.technician.avatar || '/placeholder.svg'}
-                    alt={request.technician.name}
+                    src={assignedTechnician.profileImage || '/placeholder.svg'}
+                    alt={assignedTechnician.firstName}
                   />
                   <AvatarFallback>
-                    {request.technician.name.slice(0, 2)}
+                    {assignedTechnician.firstName?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="font-medium">{request.technician.name}</span>
+                <span className="font-medium">
+                  {assignedTechnician.firstName} {assignedTechnician.lastName}
+                </span>
+                <span className="text-muted-foreground text-xs">
+                  {assignment && formatDate(assignment.assignedAt)}
+                </span>
               </div>
             ) : (
               <span className="text-muted-foreground italic">Not assigned</span>
@@ -142,33 +153,56 @@ export function RequestDetail({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant={request.technician ? 'outline' : 'default'}>
-                {request.technician
-                  ? 'Reassign Technician'
-                  : 'Assign Technician'}
-                <ChevronDown className="ml-2 h-4 w-4" />
+              <Button
+                variant={assignment ? 'outline' : 'default'}
+                disabled={isLoading === request.id}
+              >
+                {isLoading === request.id ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Assigning...
+                  </>
+                ) : (
+                  <>
+                    {assignment ? 'Reassign Technician' : 'Assign Technician'}
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>Select Technician</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {technicians.map(tech => (
-                <DropdownMenuItem
-                  key={tech.id}
-                  onClick={() => onAssignTechnician(request.id, tech.id)}
-                >
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-6 w-6">
-                      <AvatarImage
-                        src={tech.avatar || '/placeholder.svg'}
-                        alt={tech.name}
-                      />
-                      <AvatarFallback>{tech.name.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
-                    <span>{tech.name}</span>
-                  </div>
-                </DropdownMenuItem>
-              ))}
+              {technicians.length > 0 ? (
+                <>
+                  {technicians.map(tech => (
+                    <DropdownMenuItem
+                      key={tech.id}
+                      onClick={() => onAssignTechnician(request.id, tech.id)}
+                      disabled={isLoading === request.id}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage
+                            src={tech.profileImage || '/placeholder.svg'}
+                            alt={tech.firstName}
+                          />
+                          <AvatarFallback>
+                            {tech.firstName.slice(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>
+                          {tech.firstName} {tech.lastName}
+                        </span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </>
+              ) : (
+                <div className="w-full py-2 text-center text-sm text-slate-500">
+                  No available technicians at the moment.
+                </div>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -176,7 +210,7 @@ export function RequestDetail({
 
       <Tabs defaultValue="details" className="flex-1">
         <div className="border-b px-6">
-          <TabsList className="h-12 w-full justify-start space-x-6 bg-transparent p-0 md:w-1/4">
+          <TabsList className="h-12 justify-start space-x-6 bg-transparent p-0 sm:w-1/4">
             <TabsTrigger
               value="details"
               className="data-[state=active]:border-b-primary h-12 rounded-none px-0 data-[state=active]:border-b-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -200,7 +234,7 @@ export function RequestDetail({
 
         <TabsContent value="details" className="mt-0 space-y-6 p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Card className="rounded-md p-0 shadow-none">
+            <Card className="p-0 shadow-none">
               <CardContent className="p-6">
                 <h3 className="mb-4 text-lg font-semibold">
                   Request Information
@@ -240,7 +274,7 @@ export function RequestDetail({
               </CardContent>
             </Card>
 
-            <Card className="rounded-md p-0 shadow-none">
+            <Card className="p-0 shadow-none">
               <CardContent className="p-6">
                 <h3 className="mb-4 text-lg font-semibold">
                   Requester Information
@@ -260,7 +294,7 @@ export function RequestDetail({
               </CardContent>
             </Card>
 
-            <Card className="rounded-md p-0 shadow-none md:col-span-2">
+            <Card className="p-0 shadow-none md:col-span-2">
               <CardContent className="p-6">
                 <h3 className="mb-4 text-lg font-semibold">
                   Device Information
@@ -294,7 +328,7 @@ export function RequestDetail({
               </CardContent>
             </Card>
 
-            <Card className="rounded-md p-0 shadow-none md:col-span-2">
+            <Card className="p-0 shadow-none md:col-span-2">
               <CardContent className="p-6">
                 <h3 className="mb-4 text-lg font-semibold">
                   Problem Description
@@ -335,7 +369,7 @@ export function RequestDetail({
               </div>
             </div>
 
-            {request.technician && (
+            {assignment && (
               <div className="flex gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                   <svg
@@ -358,10 +392,11 @@ export function RequestDetail({
                 <div>
                   <div className="font-medium">Technician Assigned</div>
                   <div className="text-muted-foreground text-sm">
-                    {formatDate(request.updatedAt)}
+                    {formatDate(assignment.assignedAt)}
                   </div>
                   <div className="mt-1 text-sm">
-                    {request.technician.name} was assigned to this request
+                    {assignment.technician.firstName} was assigned to this
+                    request
                   </div>
                 </div>
               </div>
