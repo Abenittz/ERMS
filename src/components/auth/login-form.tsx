@@ -55,7 +55,13 @@ export function LoginForm({
       onSuccess: response => {
         console.log('Login success', response);
         toast.success('Login successFully');
-        router.push('/');
+        if (response.userWithoutPassword.role.id === 1) {
+          router.push('/admin');
+        } else if (response.userWithoutPassword.role.id === 2) {
+          router.push('/technician');
+        } else {
+          router.push('/');
+        }
       },
       onError: () => {
         toast.error('Login failed');

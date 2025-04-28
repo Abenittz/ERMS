@@ -23,6 +23,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { RecentRequestList } from '@/components/user/recent-request-list';
 import RequestForm from '@/components/user/request-form';
 import { useUserStore } from '@/store/user-store';
 
@@ -61,7 +62,7 @@ export default function Page() {
         </header>
         <div className="flex">
           <div className="container mx-auto flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div className="flex flex-col items-center justify-start gap-2 space-y-10">
+            <div className="flex min-h-dvh flex-col items-center justify-start gap-2 space-y-10">
               <div className="flex items-center justify-start gap-4">
                 <Image src={Mattu} alt="Logo" width={62} height={51} />
                 <div className="flex flex-col items-start">
@@ -74,44 +75,41 @@ export default function Page() {
                 </div>
               </div>
 
-              <h1>Hello {currentUser?.firstName}</h1>
-              {/* Clickable Request Box */}
-              <div>
-                <div
-                  className="flex h-[50px] w-[650px] cursor-pointer items-center justify-between rounded-lg bg-white p-2"
-                  onClick={toggleRequestForm}
-                >
-                  <h1 className="text-primary px-2">
-                    Do you have any repairement request
-                  </h1>
-                  <div className="bg-accent flex h-full w-10 items-center justify-center rounded-md">
-                    {isRequestFormOpen ? (
-                      <X className="text-primary" />
-                    ) : (
-                      <Plus className="text-primary" />
-                    )}
+              <div className="flex h-full w-full flex-col items-center justify-center gap-6">
+                <h1 className="text-primary text-start text-xl font-semibold">
+                  Hello, {currentUser?.firstName} {currentUser?.lastName}
+                </h1>
+                {/* Clickable Request Box */}
+                <div>
+                  <div className="flex w-[650px] cursor-pointer items-center justify-between rounded-lg bg-white px-2 py-3">
+                    <div className="flex flex-col items-start">
+                      <h1 className="text-primary px-2 font-semibold">
+                        Do you have any repairement request
+                      </h1>
+                      <p className="text-primary/70 px-2 text-sm">
+                        you can submit your repair request here
+                      </p>
+                    </div>
+
+                    <RequestForm />
                   </div>
                 </div>
 
-                {/* Show/Hide RequestForm */}
-                {isRequestFormOpen && <RequestForm />}
+                <div className="">
+                  <div className="space-y-3">
+                    <RecentRequestList />
+                    {/* <HistoryItem title="Laptop fix" category="Laptop" />
+                    <HistoryItem title="Mobile fix" category="Mobile" />
+                    <HistoryItem title="PC problem" category="" />
+                    <HistoryItem
+                      title="Computer startup issue"
+                      category="Computer"
+                    /> */}
+                  </div>
+                </div>
               </div>
 
               {/* history  */}
-              <div className="">
-                <h3 className="text-primary mb-4 text-lg font-semibold">
-                  History
-                </h3>
-                <div className="space-y-3">
-                  <HistoryItem title="Laptop fix" category="Laptop" />
-                  <HistoryItem title="Mobile fix" category="Mobile" />
-                  <HistoryItem title="PC problem" category="" />
-                  <HistoryItem
-                    title="Computer startup issue"
-                    category="Computer"
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>

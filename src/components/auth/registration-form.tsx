@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useGetSkills } from '@/hooks/admin/skill-management';
 import { useLogin, useRegistration } from '@/hooks/auth-hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { UserFormData, userSchema } from '@/lib/validation/auth';
@@ -45,6 +46,7 @@ export function RegistrationForm({
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
   const [showPassword, setShowPassword] = useState(false);
+  const { data: skills = [] } = useGetSkills();
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -142,7 +144,7 @@ export function RegistrationForm({
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select gender" />
                             </SelectTrigger>
                           </FormControl>
@@ -173,7 +175,7 @@ export function RegistrationForm({
                                 )}
                               >
                                 {field.value ? (
-                                  format(field.value, 'PPP')
+                                  format(new Date(field.value), 'PPP')
                                 ) : (
                                   <span>Pick a date</span>
                                 )}
@@ -187,7 +189,12 @@ export function RegistrationForm({
                               selected={
                                 field.value ? new Date(field.value) : undefined
                               }
-                              onSelect={field.onChange}
+                              // Convert Date -> string when selected
+                              onSelect={date => {
+                                if (date) {
+                                  field.onChange(format(date, 'yyyy-MM-dd')); // <-- returns string
+                                }
+                              }}
                               disabled={date =>
                                 date > new Date() ||
                                 date < new Date('1900-01-01')
@@ -200,15 +207,28 @@ export function RegistrationForm({
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="roleId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Role ID</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
+                        <FormLabel>Role</FormLabel>
+                        <Select
+                          onValueChange={value => field.onChange(Number(value))}
+                          defaultValue={String(field.value)}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a role" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="1">Admin</SelectItem>
+                            <SelectItem value="2">Technician</SelectItem>
+                            <SelectItem value="3">User</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -286,6 +306,7 @@ export function RegistrationForm({
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="profession"
@@ -293,7 +314,22 @@ export function RegistrationForm({
                     <FormItem>
                       <FormLabel>Profession</FormLabel>
                       <FormControl>
-                        <Input placeholder="Developer, Doctor..." {...field} />
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a profession" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {skills.map(skill => (
+                              <SelectItem key={skill.id} value={skill.name}>
+                                {skill.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

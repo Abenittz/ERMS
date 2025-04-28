@@ -111,45 +111,40 @@ const users: User[] = [
 
 // Available categories for filtering
 const categories = ['All', 'Mobile', 'PC', 'Laptop', 'Computer'];
+import { useGetTechnicians } from '@/hooks/admin/use-get-users';
+import { UserProfile } from '@/store/user-store';
 
 export function UserTable() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Mobile');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedRow, setSelectedRow] = useState<string | null>('5'); // Default to the 5th row as shown in the image
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
-  // Filter users based on selected category and search query
-  const filteredUsers = users.filter(user => {
-    const matchesCategory =
-      selectedCategory === 'All' || user.category === selectedCategory;
+  // Fetch technicians data
+  const { data: technicians = [], isLoading, isError } = useGetTechnicians();
+
+  // Filter technicians based on search query
+  const filteredTechnicians = technicians.filter((technician: UserProfile) => {
     const matchesSearch =
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.phone.includes(searchQuery);
-    return matchesCategory && matchesSearch;
+      `${technician.firstName} ${technician.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      technician.phone.includes(searchQuery) ||
+      technician.profession.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
   });
+
+  if (isLoading) return <div>Loading technicians...</div>;
+  if (isError) return <div>Error loading technicians</div>;
 
   return (
     <div className="w-full rounded-lg bg-white shadow-sm">
       <div className="flex flex-col items-start justify-between gap-4 p-4 sm:flex-row sm:items-center">
-        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger className="w-[180px] bg-white">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map(category => (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
         <div className="relative w-full sm:w-auto">
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
           <Input
             type="text"
-            placeholder="Search"
+            placeholder="Search by name, phone or profession"
             value={searchQuery}
-            onChange={event_ => setSearchQuery(event_.target.value)}
+            onChange={event => setSearchQuery(event.target.value)}
             className="w-full bg-white py-2 pr-4 pl-10 sm:w-[250px]"
           />
         </div>
@@ -160,41 +155,69 @@ export function UserTable() {
           <TableHeader className="bg-slate-50">
             <TableRow>
               <TableHead className="w-[200px] font-medium">Name</TableHead>
-              <TableHead className="font-medium">Category</TableHead>
-              <TableHead className="font-medium">Availability</TableHead>
+              <TableHead className="font-medium">Profession</TableHead>
+              <TableHead className="font-medium">Status</TableHead>
               <TableHead className="font-medium">Date of birth</TableHead>
               <TableHead className="font-medium">Phone</TableHead>
+              <TableHead className="font-medium">Email</TableHead>
               <TableHead className="font-medium">Assign</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.map(user => (
+            {filteredTechnicians.map((technician: UserProfile) => (
               <TableRow
-                key={user.id}
+                key={technician.id}
                 className={
-                  selectedRow === user.id ? 'border-background border-2' : ''
+                  selectedRow === technician.id
+                    ? 'border-background border-2'
+                    : ''
                 }
-                onClick={() => setSelectedRow(user.id)}
+                onClick={() => setSelectedRow(technician.id)}
               >
                 <TableCell className="flex items-center gap-3 py-2">
                   <Avatar className="h-12 w-12">
                     <AvatarImage
-                      src={user.avatarUrl || '/placeholder.svg'}
-                      alt={user.name}
+                      src={technician.profileImage || '/placeholder.svg'}
+                      alt={`${technician.firstName} ${technician.lastName}`}
                     />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>
+                      {technician.firstName.charAt(0)}
+                      {technician.lastName.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="text-primary font-medium">{user.name}</span>
+                  <span className="text-primary font-medium">
+                    {technician.firstName}{' '}
+                    {technician.middleName && `${technician.middleName} `}
+                  </span>
                 </TableCell>
-                <TableCell>{user.category}</TableCell>
+                <TableCell>{technician.profession}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                    <span className="text-sm text-green-600">Available</span>
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        technician.status === 'active'
+                          ? 'bg-green-500'
+                          : 'bg-gray-500'
+                      }`}
+                    ></span>
+                    <span
+                      className={`text-sm ${
+                        technician.status === 'active'
+                          ? 'text-green-600'
+                          : 'text-gray-600'
+                      }`}
+                    >
+                      {technician.status === 'active'
+                        ? 'Available'
+                        : 'Unavailable'}
+                    </span>
                   </div>
                 </TableCell>
-                <TableCell>{user.dateOfBirth}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+                <TableCell>
+                  {new Date(technician.dateOfBirth).toLocaleDateString()}
+                </TableCell>
+                <TableCell>{technician.phone}</TableCell>
+                <TableCell>{technician.email}</TableCell>
                 <TableCell>
                   <Button
                     variant="ghost"

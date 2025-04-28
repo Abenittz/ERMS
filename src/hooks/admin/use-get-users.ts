@@ -26,6 +26,7 @@ export const useGetUsers = (page = 1, pageSize = 10) => {
     retry: 2,
   });
 };
+
 export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ userId, payload }: { userId: number; payload: any }) =>

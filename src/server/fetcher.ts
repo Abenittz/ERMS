@@ -37,3 +37,16 @@ export const setCookie = (name: string, value: string) => {
   console.log('Setting cookie with options:', cookieOptions);
   document.cookie = cookieOptions; // eslint-disable-line unicorn/no-document-cookie
 };
+
+export const setRole = (name: string, value: string) => {
+  const cookieOptions = [
+    `${name}=${value}`,
+    'path=/',
+    'secure',
+    'max-age=86400',
+    'samesite=lax',
+  ].join('; ');
+
+  console.log('Setting cookie with options:', cookieOptions);
+  document.cookie = cookieOptions; // eslint-disable-line unicorn/no-document-cookie
+};

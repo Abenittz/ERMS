@@ -20,6 +20,10 @@ export const login = async (payload: LoginPayload) => {
       setCookie('accessToken', response.data.token);
     }
 
+    if (response.data.userWithoutPassword.role) {
+      setCookie('userRole', response.data.userWithoutPassword.role.name);
+    }
+
     const { token, userWithoutPassword } = response.data;
     useUserStore.getState().setUser(userWithoutPassword, token);
     return response.data;
