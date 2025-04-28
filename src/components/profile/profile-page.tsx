@@ -176,7 +176,7 @@ export function ProfileSheet({ open, onOpenChange }: ProfileSheetProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="overflow-y-auto p-6 sm:max-w-md">
+      <SheetContent className="overflow-y-auto bg-white p-6 sm:max-w-md">
         <SheetHeader className="p-0">
           <SheetTitle>User Profile</SheetTitle>
         </SheetHeader>
@@ -266,7 +266,6 @@ export function ProfileSheet({ open, onOpenChange }: ProfileSheetProps) {
                         <SelectContent>
                           <SelectItem value="Male">Male</SelectItem>
                           <SelectItem value="Female">Female</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -397,7 +396,7 @@ export function ProfileSheet({ open, onOpenChange }: ProfileSheetProps) {
             </Form>
           ) : (
             <div className="space-y-6">
-              <div className="bg-accent rounded-lg border py-6">
+              <div className="bg-accent rounded-lg py-6">
                 <div className="mb-6 flex justify-center">
                   <Avatar className="h-24 w-24">
                     <AvatarImage

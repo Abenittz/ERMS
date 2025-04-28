@@ -5,12 +5,15 @@ import {
   BookOpen,
   Bot,
   Command,
+  FileWarning,
   Frame,
   GalleryVerticalEnd,
+  LayoutDashboard,
   Map,
   PieChart,
   Settings2,
   SquareTerminal,
+  UsersRound,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -56,22 +59,22 @@ const data = {
     {
       title: 'Dashboard',
       url: '/admin',
-      icon: SquareTerminal,
+      icon: LayoutDashboard,
       isActive: true,
     },
     {
       title: 'Requests',
       url: '/admin/requests',
-      icon: Bot,
+      icon: FileWarning,
     },
     {
       title: 'Technicians',
-      url: '#',
-      icon: BookOpen,
+      url: '/admin/technicians',
+      icon: UsersRound,
     },
     {
-      title: 'Settings',
-      url: '#',
+      title: 'Skills',
+      url: '/admin/skill-management',
       icon: Settings2,
     },
   ],
