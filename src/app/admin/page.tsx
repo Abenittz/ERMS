@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import React from 'react';
 
+import { AdminDashboard } from '@/components/admin/dashboard/admin-dashboard';
 import { UserTable } from '@/components/admin/table-user';
 import { AppSidebar } from '@/components/layouts/app-sidebar';
 import {
@@ -39,21 +40,11 @@ export default function Page() {
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="mb-20 flex items-center justify-between">
-          <h1 className="text-primary text-2xl font-semibold">
-            Mattu University ERMS
-          </h1>
-          <Button>
-            <Plus />
-            New User
-          </Button>
-        </div>
+      <AdminDashboard />
+      {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="mt-">
-          {/* <UserTable /> */}
-          Admin dashboard
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
