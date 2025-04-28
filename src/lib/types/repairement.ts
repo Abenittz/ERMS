@@ -1,4 +1,7 @@
+import { UserProfile } from '@/store/user-store';
+
 export interface RepairRequestPayload {
+  userId: number;
   requestNumber: string;
   requestDate: string;
   department: string;
@@ -10,15 +13,21 @@ export interface RepairRequestPayload {
   assetNumber: string;
   problemDescription: string;
   priority: string;
+  buildingBlockNumber: string;
+  officeNumber: string;
 }
 
 export interface RepairRequestResponse {
   id: number;
   requestNumber: string;
+  User: UserProfile;
+  userId: number;
   requestDate: string; // ISO date string
   department: string;
   requesterName: string;
   contactPhone: string;
+  buildingBlockNumber: string;
+  officeNumber: string;
   deviceName: string;
   deviceModel: string;
   serialNumber: string;
